@@ -1,24 +1,17 @@
 import { useState, useEffect } from "react";
+import UserNameForm from "./components/UserNameForm";
+import RecentlyCompletedProjects from "./components/RecentlyCompletedProjects";
 import "./App.css";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [currentUserProjects, setCurrentUserProjects] = useState({});
-  const {
-    username,
-    large_photo_url,
-    first_name,
-    location,
-    about_me,
-    fave_curse,
-  } = currentUser;
+  const [currentUserProjects, setCurrentUserProjects] = useState([]);
 
-  const fetchData = async () => {
-    const username = "C917BD7916D242A48F48";
-    const password = "T1hqLexGYuxXPMdr-vSvxx3dTmjVrHMqHT5MEOfq";
-    const ravUserName = "goodrebecca";
-    // const ravUserName = "sockdiva";
+  const handleClick = async (ravUserName) => {
+    // const ravUserName = "goodrebecca";
     // const ravUserName = "yarnzilla";
+    // const ravUserName = "sockdiva";
+    // const ravUserName = "pattiecakes";
     const options = {
       headers: {
         Authorization: `Basic ${btoa(`${username}:${password}`)}`,
@@ -50,56 +43,51 @@ function App() {
     setCurrentUserProjects(projectsJSON.projects);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const {
+    username,
+    large_photo_url,
+    first_name,
+    location,
+    about_me,
+    fave_curse,
+  } = currentUser;
 
   return (
     <div className="App">
+      <UserNameForm handleClick={handleClick} />
+
       <div className="user-info">
         <h1>{username}</h1>
         <p className="user-first-name">{first_name}</p>
         <div className="user-details">
           <img src={large_photo_url} />
           <div className="inner-details">
-            <p>
-              <span>Location:</span> {location}
-            </p>
-            <p>
-              <span>About Me:</span> {about_me}
-            </p>
-            <p>
-              <span>Favorite Curse:</span> {fave_curse}
-            </p>
+            {location && (
+              <p>
+                <span>Location: </span>
+                {location}
+              </p>
+            )}
+
+            {about_me && (
+              <p>
+                <span>About Me: </span>
+                {about_me}
+              </p>
+            )}
+
+            {fave_curse && (
+              <p>
+                <span>Favorite Curse: </span>
+                {fave_curse}
+              </p>
+            )}
           </div>
         </div>
       </div>
-      <ul className="projects-list">
-        {Object.keys(currentUser).length &&
-          currentUserProjects.length &&
-          currentUserProjects.map((project) => {
-            return (
-              <>
-                {/* {
-                  <li className={`single-project id-${project.id}`}>
-                    <a
-                      className="link"
-                      href={project.links.self.href}
-                      target="_blank"
-                    >
-                      {project.name}
-                    </a>
-                    <img
-                      className="project-photo"
-                      src={project?.first_photo?.small_url}
-                      alt={project.name}
-                    />
-                  </li>
-                } */}
-              </>
-            );
-          })}
-      </ul>
+      <hr />
+      <h2>Recently Completed Projects</h2>
+      <RecentlyCompletedProjects currentUserProjects={currentUserProjects} />
     </div>
   );
 }
