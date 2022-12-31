@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import UserProfile from "./UserProfile";
+import React, { useState } from "react";
 import "../App.css";
 
 function UserNameForm(props) {
@@ -10,19 +9,22 @@ function UserNameForm(props) {
     setRavUserName(e.target.value);
   };
 
-  const internalClickHandler = () => {
-    handleClick(ravUserName);
-  };
   return (
     <>
-      <label>Look up a Ravelry User</label>
+      <label>Look up a Ravelry User </label>
       <input
         type="text"
         name="ravelry-user-name"
         value={ravUserName}
         onChange={handleChange}
       />
-      <button onClick={internalClickHandler}>Search for User</button>
+      <button
+        onClick={() => {
+          handleClick(ravUserName);
+        }}
+      >
+        Search for User
+      </button>
     </>
   );
 }

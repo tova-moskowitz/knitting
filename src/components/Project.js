@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 
 function Project({ project }) {
@@ -12,6 +12,9 @@ function Project({ project }) {
   } = project;
 
   const href = project?.links?.self?.href;
+
+  // early return
+  // if (!project) return null;
 
   return (
     <>
